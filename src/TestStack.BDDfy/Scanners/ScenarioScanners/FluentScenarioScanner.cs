@@ -36,7 +36,6 @@ namespace TestStack.BDDfy
         private static string GetTitleFromMethodNameInStackTrace(object testObject)
         {
             // ReSharper disable once JoinDeclarationAndInitializer
-#if STACKTRACE
             var trace = new System.Diagnostics.StackTrace();
             var frames = trace.GetFrames();
 
@@ -45,9 +44,6 @@ namespace TestStack.BDDfy
                 return null;
 
             return Configurator.Scanners.Humanize(initiatingFrame.GetMethod().Name);
-#else
-            return null;
-#endif
         }
     }
 }

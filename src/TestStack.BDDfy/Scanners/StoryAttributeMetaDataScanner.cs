@@ -38,8 +38,6 @@ namespace TestStack.BDDfy
         {
             if (explicitStoryType != null)
                 return explicitStoryType;
-
-#if STACKTRACE
             StackTrace stackTrace = new StackTrace();
 
             var frames = stackTrace.GetFrames();
@@ -52,9 +50,6 @@ namespace TestStack.BDDfy
                 return null;
 
             return firstFrame.GetMethod().DeclaringType;
-#else
-            return null;
-#endif
         }
 
         static StoryNarrativeAttribute GetStoryAttribute(Type candidateStoryType)
