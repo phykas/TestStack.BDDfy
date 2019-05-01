@@ -16,13 +16,23 @@ namespace TestStack.BDDfy.Reporters.GherkinFeature
         public void Process(IEnumerable<Story> stories)
         {
             var features = "Features";
-            if (!Directory.Exists(features)) Directory.CreateDirectory(features);
-
-            foreach (IGrouping<string, Story> grouped in stories.GroupBy(e => e.Namespace))
+            if (Directory.Exists(features))
             {
-                Story story = grouped.First();
-                StringBuilder builder = new StringBuilder();
-                builder.AppendLine($"Feature: {story.Metadata.Title}");
+               Directory.Delete(features, true);
+            }
+
+
+            foreach (var grouped in stories.GroupBy(e => e.Namespace))
+            {
+                var story = grouped.First();
+                var split = story.Namespace.Split(".");
+                var relativePath = string.Join(".", split.Take(split.Count() - 1))
+                    .Replace(story.Metadata.Type.Assembly.ManifestModule.ScopeName.Replace(".dll", string.Empty),
+                        string.Empty)
+                    .Replace(".", "\\");
+                var path = "Features" + relativePath;
+                Directory.CreateDirectory(path);
+                var builder = new StringBuilder();
                 builder.AppendLine($"Feature: {story.Metadata.Title}");
                 builder.AppendLine($"\t{story.Metadata.Narrative1}");
                 builder.AppendLine($"\t{story.Metadata.Narrative2}");
@@ -34,13 +44,10 @@ namespace TestStack.BDDfy.Reporters.GherkinFeature
                     builder.AppendLine($"\tScenario: {scenario.Title}");
 
                     foreach (var step in scenario.Steps.Where(e => e.ShouldReport))
-                    {
                         builder.AppendLine($"\t\t{step.Title}");
-                    }
-
                 }
 
-                File.WriteAllText($"Features\\{story.Metadata.Title}.feature", builder.ToString());
+                File.WriteAllText($"{path}\\{story.Metadata.Title}.feature", builder.ToString());
             }
         }
     }

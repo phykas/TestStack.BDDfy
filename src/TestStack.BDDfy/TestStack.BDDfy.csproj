@@ -14,6 +14,10 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <OutputPath>C:\Projekti\taskflow\Libraries\TestStack.BDDfy\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="**\Scripts\*.*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
