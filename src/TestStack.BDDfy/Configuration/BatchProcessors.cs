@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using TestStack.BDDfy.Processors;
 using TestStack.BDDfy.Reporters.Diagnostics;
+using TestStack.BDDfy.Reporters.GherkinFeature;
 using TestStack.BDDfy.Reporters.Html;
+using TestStack.BDDfy.Reporters.Javascript;
 using TestStack.BDDfy.Reporters.MarkDown;
 
 namespace TestStack.BDDfy.Configuration
@@ -27,6 +29,14 @@ namespace TestStack.BDDfy.Configuration
             if (diagnostics != null)
                 yield return diagnostics;
 
+            var gherkin = GherkinFeatureReport.ConstructFor(StoryCache.Stories);
+            if (gherkin != null)
+                yield return gherkin;
+
+            var javascript = JavascriptReport.ConstructFor(StoryCache.Stories);
+            if (javascript != null)
+                yield return javascript;
+
             foreach (var addedProcessor in _addedProcessors)
             {
                 yield return addedProcessor;
@@ -40,6 +50,8 @@ namespace TestStack.BDDfy.Configuration
         public BatchProcessorFactory MarkDownReport { get; } = new BatchProcessorFactory(() => new MarkDownReporter(), false);
 
         public BatchProcessorFactory DiagnosticsReport { get; } = new BatchProcessorFactory(() => new DiagnosticsReporter(), false);
+        public BatchProcessorFactory GherkinFeatureReport { get; } = new BatchProcessorFactory(() => new GherkinFeatureReporter(), true);
+        public BatchProcessorFactory JavascriptReport { get; } = new BatchProcessorFactory(() => new JavascriptReporter(), true);
 
         readonly List<IBatchProcessor> _addedProcessors = new List<IBatchProcessor>();
 

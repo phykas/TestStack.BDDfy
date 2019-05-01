@@ -25,4 +25,6 @@ namespace TestStack.BDDfy.Reporters
             set { Console.ForegroundColor = value; }
         }
     }
+
+
 }
