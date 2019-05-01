@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-
 namespace TestStack.BDDfy.Reporters
 {
     public class ReportModel
@@ -29,7 +27,6 @@ namespace TestStack.BDDfy.Reporters
 
         public class StoryMetadata
         {
-            [JsonIgnore]
             public Type Type { get; set; }
             public string Title { get; set; }
             public string TitlePrefix { get; set; }
